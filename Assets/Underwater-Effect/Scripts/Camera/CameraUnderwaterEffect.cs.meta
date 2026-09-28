@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e264d9682c199d24c9c47940b203bd7c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Scripts/Camera/CameraUnderwaterEffect.cs
+  uploadId: 724373

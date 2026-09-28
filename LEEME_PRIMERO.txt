@@ -1,0 +1,45 @@
+KUNTUR: ECOS DEL VALLE — LEEME PRIMERO
+========================================
+
+Ya te dejé todos los scripts C# del juego dentro de esta misma carpeta
+(D:\Junior\KunturEcosDelValle), en Assets\_Project\Scripts y
+Assets\_Project\Tests — exactamente donde Unity los espera.
+
+Lo único que yo NO puedo hacer desde acá es crear el proyecto de Unity en sí
+(eso requiere abrir el Editor, algo que solo se hace con Unity corriendo en
+tu pantalla). Son 2 minutos de tu parte:
+
+PASO 1 — Crear el proyecto sobre esta misma carpeta
+----------------------------------------------------
+1. Abre Unity Hub.
+2. Click en "New project" (Proyecto nuevo).
+3. Elige la plantilla "3D (URP)".
+4. En "Project name" escribe:  KunturEcosDelValle
+5. En "Location" elige:  D:\Junior   (¡IMPORTANTE! no D:\Junior\KunturEcosDelValle,
+   sino D:\Junior a secas — Unity Hub arma el nombre de la carpeta final él
+   solo juntando Location + Project name, y como ya existe la carpeta
+   KunturEcosDelValle con los scripts adentro, Unity va a completarla con
+   todo lo que le falta (Library, ProjectSettings, Packages, la escena de
+   ejemplo) SIN borrar lo que ya dejé.)
+6. Click "Create project" y espera (la primera vez tarda varios minutos
+   mientras instala paquetes).
+
+PASO 2 — Confirmar que los scripts llegaron bien
+--------------------------------------------------
+Cuando Unity termine de abrir, en la ventana "Project" (abajo) deberías ver:
+  Assets > _Project > Scripts > Core / Player / Systems / Mechanics / UI
+  Assets > _Project > Tests > EditMode
+Si Unity te muestra algún error de compilación al abrir (esquina inferior
+derecha, ícono rojo), es normal en este punto: todavía falta importar el
+paquete del personaje (Starter Assets) y el Input System, que son los
+siguientes pasos — está todo explicado en GUIA_IMPLEMENTACION_UNITY.md,
+que también dejé en esta misma carpeta.
+
+PASO 3 — Seguir la guía
+-------------------------
+Abre GUIA_IMPLEMENTACION_UNITY.md (con el Bloc de notas o cualquier editor)
+y sigue desde la sección "2. Importar el personaje controlable" — la
+sección 1 (crear el proyecto) ya la hiciste en el Paso 1 de aquí arriba.
+
+Cualquier error que te salga en Unity, mándame una captura de pantalla y
+seguimos desde ahí.

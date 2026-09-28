@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1daaed06d2525f449b93b6afb0bc94fa
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Shaders/Camera Underwater Effect/CameraUnderwaterEffectNoise.shader
+  uploadId: 724373

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: da7a65726fccb6f4a89cc233f1f2f886
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Prefabs/Water Surfaces/No Effect/Basic Water Plane.prefab
+  uploadId: 724373

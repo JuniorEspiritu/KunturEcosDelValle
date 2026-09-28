@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9603ba083e0c68b4ea225e8c260e0df1
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Shaders/Fallback Shaders/NormalsTexture.shader
+  uploadId: 724373

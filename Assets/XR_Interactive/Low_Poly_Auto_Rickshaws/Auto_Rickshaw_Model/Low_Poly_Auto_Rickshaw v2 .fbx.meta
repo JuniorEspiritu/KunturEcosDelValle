@@ -1,0 +1,311 @@
+fileFormatVersion: 2
+guid: 1a2f99058d9cf8a4dbf00862c32773d3
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: a6ce573b4440abf45a59a823b6124647, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 943d3ab9918c1b94094d2e57a7cdd9f4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.012
+    second: {fileID: 2100000, guid: f1baf5c6dda06d74ab4c1176071d7713, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.013
+    second: {fileID: 2100000, guid: b8dba9385bad66646b9b765b9a11a1e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.014
+    second: {fileID: 2100000, guid: fa3222297a178e945b1dd042a0dbfee8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.015
+    second: {fileID: 2100000, guid: 9d69f9071bc92b446b6ed9e4ef798a31, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.016
+    second: {fileID: 2100000, guid: f64d264f784d09b40ab87b61a94bf22e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.017
+    second: {fileID: 2100000, guid: a22dba77ce62f124a8fafbcd30ab8bfa, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_body_BaseColor blue
+    second: {fileID: 2800000, guid: 2c72f5af6c2409240aa27edb1474501a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_body_Emissive
+    second: {fileID: 2800000, guid: 186318b0b17743141b7345845e9c3127, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_body_Metallic
+    second: {fileID: 2800000, guid: 773c84adb2a79d74fa55b281d53cc5d4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_body_Normal
+    second: {fileID: 2800000, guid: 1cd345b3fbe709f4a8215f7f6c7f697a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_body_Roughness
+    second: {fileID: 2800000, guid: c114b528536984240be8344aaabb2cde, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_frame_BaseColor
+    second: {fileID: 2800000, guid: 5e61a1a2e2f421146b7bd124e91cfa4e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_frame_Metallic
+    second: {fileID: 2800000, guid: c5fdc2559eaaf1d43bfdf6d2a21735c6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_frame_Normal
+    second: {fileID: 2800000, guid: 84f22fe37c647c341a834321ff470208, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_frame_Roughness
+    second: {fileID: 2800000, guid: aabfb8b63b4d4c943b29d4613286b53b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_front_light_BaseColor
+    second: {fileID: 2800000, guid: 0c2e3c92b6e296d4b86fa18d534ce4fb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_front_light_Emissive
+    second: {fileID: 2800000, guid: 499a027947e1b9247a7776812e610774, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_front_light_Metallic
+    second: {fileID: 2800000, guid: 066724a0655d88349b6ecb5638cf9b81, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_front_light_Normal
+    second: {fileID: 2800000, guid: 49c9b8b4f23654341be066279ea57d69, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_front_light_Roughness
+    second: {fileID: 2800000, guid: 2c6fe2bb93acf1748919c2dad3ae9854, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_glass_BaseColor
+    second: {fileID: 2800000, guid: 6c560a2a817893e48abdc4c64fd51548, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_glass_Metallic
+    second: {fileID: 2800000, guid: 3208c91a014ed9a40a21bf3d0e219aea, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_glass_Roughness
+    second: {fileID: 2800000, guid: 5f5f7f9d263205c4d82b76bbd44697da, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_seat_BaseColor
+    second: {fileID: 2800000, guid: d9b619d775dd03743a6dde8a1b80adc4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_seat_Normal
+    second: {fileID: 2800000, guid: 6b84550f5426f71498a0e6991f2475c3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_seat_Roughness
+    second: {fileID: 2800000, guid: d76579dd89ca0d0479f5311c2467c032, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_top_BaseColor blue
+    second: {fileID: 2800000, guid: b67e6b554f25e8c4cb22ce5f6a2c4a7f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_top_Normal
+    second: {fileID: 2800000, guid: debc8ba7f34b3d1499b8d623fca02793, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_top_Roughness
+    second: {fileID: 2800000, guid: 82606ac5b2b3c5342ae13396134cf62e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_1_BaseColor
+    second: {fileID: 2800000, guid: 0b463eca04ec0804898ad14aff75e1dc, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_1_Metallic
+    second: {fileID: 2800000, guid: 6207a35669672dc4db786077feb0c3a4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_1_Normal
+    second: {fileID: 2800000, guid: 95f8cc4fe4341c74a8974b656a1bede3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_1_Roughness
+    second: {fileID: 2800000, guid: 9440eeb61976a29439efc134d6bb846d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_2_BaseColor
+    second: {fileID: 2800000, guid: 9c8542efc67401943b25d10db74ecd76, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_2_Metallic
+    second: {fileID: 2800000, guid: dd4cb9179a59c2041ad6385d46c23168, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_2_Normal
+    second: {fileID: 2800000, guid: 68d503efca6e06a49a3f28214b056f39, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: auto rickhsha for texture_wheel_2_Roughness
+    second: {fileID: 2800000, guid: 361181ce38083134fa9e1a4873ae132b, type: 3}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 358118
+  packageName: Low Poly Auto Rickshaw Pack
+  packageVersion: 1.0
+  assetPath: Assets/XR_Interactive/Low_Poly_Auto_Rickshaws/Auto_Rickshaw_Model/Low_Poly_Auto_Rickshaw v2 .fbx
+  uploadId: 902364

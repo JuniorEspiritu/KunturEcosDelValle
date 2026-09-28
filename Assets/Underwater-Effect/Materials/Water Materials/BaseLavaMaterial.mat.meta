@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8d5d20f6bd53bd04aa67fb0ae764557c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Materials/Water Materials/BaseLavaMaterial.mat
+  uploadId: 724373

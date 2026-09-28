@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c8b030c3773c9ef41a8323fa5f8eb605
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 26707
+  packageName: Low Poly Vehicles Pack
+  packageVersion: 1.0
+  assetPath: Assets/_ApocalypticVehiclesPack/SpecGrayscaleGlassSF.shader
+  uploadId: 44597

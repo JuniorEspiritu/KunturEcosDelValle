@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 70db45f3c925dec4fa628d98720d9ce4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Prefabs/Camera Underwater Effect/Camera (Underwater Effect).prefab
+  uploadId: 724373

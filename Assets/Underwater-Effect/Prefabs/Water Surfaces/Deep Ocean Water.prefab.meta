@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0338bf71cd9fe4c49af5c7ea3477d071
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Prefabs/Water Surfaces/Deep Ocean Water.prefab
+  uploadId: 724373

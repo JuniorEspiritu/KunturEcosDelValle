@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 64f51acaec1ee104487a09837487bf7a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Materials/Water Materials/PondWaterSurface.mat
+  uploadId: 724373

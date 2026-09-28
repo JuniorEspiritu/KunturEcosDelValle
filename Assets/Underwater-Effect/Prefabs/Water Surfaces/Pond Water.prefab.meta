@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b4fe7264548e05744a5873c3b4d5ae2d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Prefabs/Water Surfaces/Pond Water.prefab
+  uploadId: 724373

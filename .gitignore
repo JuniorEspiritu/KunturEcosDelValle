@@ -1,0 +1,48 @@
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+crashlytics-buildid.txt
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+
+# IDE / solución generada por Unity
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Carpetas locales del proyecto (respaldos, audios viejos, subidas)
+/_KunturFuentes/
+/_AudioViejo/
+/Trailer/frames/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

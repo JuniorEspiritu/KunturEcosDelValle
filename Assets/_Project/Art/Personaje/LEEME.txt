@@ -1,0 +1,51 @@
+SUELTA ACÁ EL PERSONAJE DESCARGADO
+===================================
+
+Todo lo que pongas en esta carpeta reemplaza automáticamente al cóndor como
+jugador. No hay que tocar código ni arrastrar nada en el Inspector: al
+reconstruir la escena (menú Kuntur > Reconstruir Ahora) el generador lo
+encuentra, lo pone del tamaño correcto, lo planta en el suelo y le conecta el
+movimiento del juego.
+
+QUÉ SIRVE
+---------
+- Un prefab del Asset Store que ya venga con su Animator montado.
+  Se respeta tal cual: sus animaciones ya vienen probadas.
+- Un FBX de Mixamo con sus clips. Se le arma el controlador solo.
+
+Tiene que tener malla con esqueleto (SkinnedMeshRenderer). Si no, se ignora.
+
+SI BAJAS DE MIXAMO (gratis, mixamo.com)
+---------------------------------------
+1. Elige un personaje y descárgalo en formato FBX.
+2. Descarga aparte las animaciones que quieras, con el MISMO personaje puesto:
+   Idle, Walking, Running, Jump, Crouch.
+   Marca "In Place" en las que la ofrezcan.
+3. Suelta todos los FBX en esta carpeta.
+
+Los clips se reconocen por el NOMBRE del archivo o del clip. Basta con que
+contengan alguna de estas palabras:
+
+   quieto   -> idle, stand, quiet
+   caminar  -> walk, camin
+   correr   -> run, sprint, corr
+   saltar   -> jump, salt
+   agachado -> crouch, agach
+
+Si un clip se llama "mixamo.com" (pasa a veces), renómbralo a "Walking",
+"Running", etc. según lo que sea, o no se va a reconocer.
+
+CÓMO SABER SI QUEDÓ BIEN
+------------------------
+En el Console de Unity, al reconstruir, van a salir estas líneas:
+
+   [Kuntur] Usando el personaje descargado: <nombre>
+   [Kuntur] Controlador armado -> quieto: ..., caminar: ..., correr: ...
+   [Kuntur] Personaje conectado. Parámetros detectados -> ...
+
+Si alguna dice "ninguno" donde esperabas un clip, es que el nombre no calzó
+con la lista de arriba.
+
+PARA VOLVER AL CÓNDOR
+---------------------
+Vacía esta carpeta (deja este archivo si quieres) y reconstruye la escena.

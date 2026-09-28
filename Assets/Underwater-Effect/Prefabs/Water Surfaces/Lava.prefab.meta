@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8de3ba9f64573c34cb5045ff1c3ecdde
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Prefabs/Water Surfaces/Lava.prefab
+  uploadId: 724373

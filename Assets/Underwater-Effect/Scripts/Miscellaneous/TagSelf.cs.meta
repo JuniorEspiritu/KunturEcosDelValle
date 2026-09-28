@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8763e8c02d7efc54f96ca61e5292905b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 307825
+  packageName: Underwater Camera FX
+  packageVersion: 1.0.0
+  assetPath: Assets/Underwater-Effect/Scripts/Miscellaneous/TagSelf.cs
+  uploadId: 724373
