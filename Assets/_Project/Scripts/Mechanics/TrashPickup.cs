@@ -65,18 +65,6 @@ public class TrashPickup : MonoBehaviour, IInteractable
         if (collected) return;
         collected = true;
 
-        ScoreManager.Instance.AddScore(scoreValue, UIPalette.Green);
-        ValleyHealthManager.Instance.ChangeHealth(healthContribution);
-        ObjectiveSystem.Instance.ReportProgress(objectiveId, 1);
-        if (TrashInventory.Instance != null) TrashInventory.Instance.Collect(trashType);
-
-        // El sonido sale del AudioManager y no de este objeto: el residuo se
-        // encoge y se apaga enseguida, y un AudioSource propio se cortaría a
-        // la mitad del "clink".
-        if (AudioManager.Instance != null) AudioManager.Instance.PlayTrashPickup();
-        // Cada residuo recogido recarga un poco la energía para correr.
-        SimpleThirdPersonController.AddEnergy(0.12f);
-
         // Apaga el collider ya mismo para que no se pueda volver a "recoger"
         // mientras se reproduce la animación de salida.
         Collider col = GetComponent<Collider>();
@@ -90,10 +78,43 @@ public class TrashPickup : MonoBehaviour, IInteractable
 
         // Con el Kuntur de Mixamo: se agacha de verdad (animación "recojer")
         // y la bolsa desaparece cuando la mano llega a ella, no antes.
-        if (KunturMixamoAnimator.Instance != null)
-            KunturMixamoAnimator.Instance.PlayPickup(transform.position, () => { if (this != null) StartCoroutine(PickupAnimation()); });
-        else
-            StartCoroutine(PickupAnimation());
+        // Va ANTES de sumar el objetivo: si esta es la última bolsa, la misión
+        // se cumple ahí mismo, y el baile de victoria tiene que ver que Kuntur
+        // sigue agachado para esperar a que termine (si no, el gesto de
+        // recoger le pisa el baile).
+        bool animated = KunturMixamoAnimator.Instance != null;
+        if (animated) KunturMixamoAnimator.Instance.PlayPickup(transform.position, OnGrabbed);
+
+        ScoreManager.Instance.AddScore(scoreValue, UIPalette.Green);
+        ValleyHealthManager.Instance.ChangeHealth(healthContribution);
+        ObjectiveSystem.Instance.ReportProgress(objectiveId, 1);
+        if (TrashInventory.Instance != null) TrashInventory.Instance.Collect(trashType);
+
+        // El sonido sale del AudioManager y no de este objeto: el residuo se
+        // encoge y se apaga enseguida, y un AudioSource propio se cortaría a
+        // la mitad del "clink".
+        if (AudioManager.Instance != null) AudioManager.Instance.PlayTrashPickup();
+        // Cada residuo recogido recarga un poco la energía para correr.
+        SimpleThirdPersonController.AddEnergy(0.12f);
+
+        if (!animated) OnGrabbed();
+    }
+
+    // La mano llegó a la bolsa. Si la zona ya se apagó (misión cumplida), no
+    // se puede arrancar una corrutina en un objeto apagado: Unity lo marca
+    // como error y, con "Error Pause" prendido en la consola, pausa el
+    // editor. En ese caso la bolsa queda recogida de una vez.
+    private void OnGrabbed()
+    {
+        if (this == null) return;
+        if (gameObject.activeInHierarchy) StartCoroutine(PickupAnimation());
+        else HideNow();
+    }
+
+    private void HideNow()
+    {
+        if (visualToHide != null) visualToHide.SetActive(false);
+        else gameObject.SetActive(false);
     }
 
     // Encoge el objeto mientras sube un poco, como si Kuntur lo levantara -
@@ -114,8 +135,7 @@ public class TrashPickup : MonoBehaviour, IInteractable
             yield return null;
         }
 
-        if (visualToHide != null) visualToHide.SetActive(false);
-        else gameObject.SetActive(false);
+        HideNow();
     }
 
     // Nombre de lo que es (botella, lata, bolsa, caja de pizza...).

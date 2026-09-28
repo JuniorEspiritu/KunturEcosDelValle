@@ -537,7 +537,10 @@ public class MissionDirector : MonoBehaviour
 
         recentZones.Clear();
         foreach (Zone z in activeZones) recentZones.Add(z.id);
-        foreach (Zone z in activeZones) if (z.root != null) z.root.SetActive(false);
+        // La zona limpia se apaga cuando Kuntur termina de levantar la última
+        // bolsa: si se apaga al toque, la bolsa desaparece antes de que la
+        // mano llegue a ella.
+        StartCoroutine(HideZonesAfterGesture(new List<Zone>(activeZones)));
 
         // Guardado: lo logrado hoy no se pierde aunque se cierre el juego.
         SaveData save = SaveSystem.Current;
@@ -572,6 +575,23 @@ public class MissionDirector : MonoBehaviour
         ShowBanner(title, body, stars);
         // Aventura sin fin: al toque aparece alguien más que necesita ayuda.
         StartCoroutine(StartLevelAfter(4f));
+    }
+
+    private IEnumerator HideZonesAfterGesture(List<Zone> finished)
+    {
+        float wait = 0f;
+        while (KunturMixamoAnimator.Instance != null && KunturMixamoAnimator.Instance.Busy && wait < 4f)
+        {
+            wait += Time.deltaTime;
+            yield return null;
+        }
+        foreach (Zone z in finished)
+        {
+            if (z.root == null) continue;
+            // Por si ya arrancó otra limpieza justo en ese mismo lugar.
+            if (phase == Phase.Cleaning && activeZones.Contains(z)) continue;
+            z.root.SetActive(false);
+        }
     }
 
     private void HandleTimeUp()

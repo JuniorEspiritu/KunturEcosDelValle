@@ -21,12 +21,6 @@ public class WaterSampleKit : MonoBehaviour, IInteractable
         if (sampled) return;
         sampled = true;
 
-        ScoreManager.Instance.AddScore(scoreValue, UIPalette.Blue);
-        ValleyHealthManager.Instance.ChangeHealth(healthContribution);
-        ObjectiveSystem.Instance.ReportProgress(objectiveId, 1);
-
-        if (AudioManager.Instance != null) AudioManager.Instance.PlayWaterSample();
-
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
@@ -34,10 +28,33 @@ public class WaterSampleKit : MonoBehaviour, IInteractable
         if (glow != null) glow.enabled = false;
 
         // Kuntur se arrodilla en la orilla a llenar el frasco (recojer2).
-        if (KunturMixamoAnimator.Instance != null)
-            KunturMixamoAnimator.Instance.PlaySample(transform.position, () => { if (this != null) StartCoroutine(PickupAnimation()); });
-        else
-            StartCoroutine(PickupAnimation());
+        // Igual que la basura: el gesto arranca ANTES de sumar el objetivo,
+        // por si esta muestra es lo último que faltaba para cumplir la misión.
+        bool animated = KunturMixamoAnimator.Instance != null;
+        if (animated) KunturMixamoAnimator.Instance.PlaySample(transform.position, OnGrabbed);
+
+        ScoreManager.Instance.AddScore(scoreValue, UIPalette.Blue);
+        ValleyHealthManager.Instance.ChangeHealth(healthContribution);
+        ObjectiveSystem.Instance.ReportProgress(objectiveId, 1);
+
+        if (AudioManager.Instance != null) AudioManager.Instance.PlayWaterSample();
+
+        if (!animated) OnGrabbed();
+    }
+
+    // Si la zona ya se apagó, no se arranca la corrutina (sería un error de
+    // Unity en un objeto apagado): el frasco queda tomado de una vez.
+    private void OnGrabbed()
+    {
+        if (this == null) return;
+        if (gameObject.activeInHierarchy) StartCoroutine(PickupAnimation());
+        else HideNow();
+    }
+
+    private void HideNow()
+    {
+        if (visualToHide != null) visualToHide.SetActive(false);
+        else gameObject.SetActive(false);
     }
 
     // Mismo efecto de "encoger y subir" que la basura, para que la
@@ -58,8 +75,7 @@ public class WaterSampleKit : MonoBehaviour, IInteractable
             yield return null;
         }
 
-        if (visualToHide != null) visualToHide.SetActive(false);
-        else gameObject.SetActive(false);
+        HideNow();
     }
 
     public string GetPrompt() => "Tomar muestra de agua";
