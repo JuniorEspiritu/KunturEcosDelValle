@@ -27,6 +27,7 @@ public class MenuController : MonoBehaviour
     public void NewGame()
     {
         SaveSystem.Clear();
+        SaveSystem.FreshStart = true;
         // v55b: primero la intro cinemática (y al entrar, el tutorial).
         Go(Application.CanStreamedLevelBeLoaded(introSceneName) ? introSceneName : explorationSceneName);
     }

@@ -27,11 +27,26 @@ public class KunturCinematicCamera : MonoBehaviour
     [SerializeField] private float portraitDistance = 3.1f;
     [SerializeField] private float portraitHeight = 1.9f;
 
-    private enum Shot { None, Dialogue, Portrait }
+    [Header("Conversación por turnos (sobre el hombro)")]
+    // La toma clásica de GTA: la cámara se pone detrás del hombro del que
+    // ESCUCHA y encuadra la cara del que HABLA. Al cambiar el turno, cambia
+    // de hombro pero se queda del mismo lado de la línea que une a los dos
+    // (la "regla de los 180°"), que es lo que hace que no se sienta un salto.
+    [SerializeField] private float shoulderBack = 1.25f;    // detrás del que escucha
+    [SerializeField] private float shoulderSide = 0.72f;    // corrido a un costado
+    [SerializeField] private float shoulderHeight = 1.62f;  // a la altura de la cabeza
+    [SerializeField] private float speakerHeadHeight = 1.5f;
+    [SerializeField] private float minSpeakerDistance = 2.1f;
+
+    private enum Shot { None, Dialogue, Portrait, Speaker }
 
     private Shot shot = Shot.None;
     private Transform player;
     private Transform other;
+    private Transform speaker;
+    private Transform listener;
+    private Vector3 conversationAxis = Vector3.forward;
+    private bool hasConversationAxis;
     private float sideSign = 1f;
     private Vector3 restLocalPosition;
     private Quaternion restLocalRotation;
@@ -42,6 +57,7 @@ public class KunturCinematicCamera : MonoBehaviour
     private float shotDistance;
     private bool shotSway;
     private float shotTime;
+    private bool snapNow;
 
     public bool Active => shot != Shot.None;
     // Mientras dura una toma o la vuelta a su lugar, nadie más mueve la cámara
@@ -79,6 +95,42 @@ public class KunturCinematicCamera : MonoBehaviour
         returning = 0f;
     }
 
+    // Enfoca al que está hablando, desde el hombro del que escucha. Se llama
+    // una vez por turno: al abrir la conversación (habla el vecino), cuando
+    // Kuntur contesta, y cuando el vecino responde.
+    public void StartSpeaker(Transform newSpeaker, Transform newListener)
+    {
+        if (newSpeaker == null || newListener == null || FindPlayer() == null) return;
+        RememberRest();
+
+        // El eje de la conversación se fija en el primer turno y ya no se
+        // mueve: así la cámara se queda siempre del mismo lado aunque los dos
+        // se acomoden mientras hablan.
+        if (shot != Shot.Speaker || !hasConversationAxis)
+        {
+            Vector3 axis = Flat(newSpeaker.position - newListener.position);
+            if (axis.sqrMagnitude < 0.001f) axis = Flat(newListener.forward);
+            if (axis.sqrMagnitude < 0.001f) axis = Vector3.forward;
+            conversationAxis = axis.normalized;
+            hasConversationAxis = true;
+
+            // Se queda del lado al que la cámara ya estaba mirando: el corte
+            // de entrada es corto y no cruza por dentro de nadie.
+            Vector3 side = Vector3.Cross(Vector3.up, conversationAxis);
+            sideSign = Vector3.Dot(transform.position - newListener.position, side) >= 0f ? 1f : -1f;
+        }
+
+        // Cambio de turno: corte seco, como en una película. Entrar a la
+        // conversación desde el juego, en cambio, va suave.
+        snapNow = shot == Shot.Speaker && speaker != newSpeaker;
+
+        speaker = newSpeaker;
+        listener = newListener;
+        shot = Shot.Speaker;
+        shotTime = 0f;
+        returning = 0f;
+    }
+
     // distance < 0: la de siempre. sway: la cámara se mece de un lado a
     // otro despacito (para el baile de victoria, que no se vea como foto).
     public void StartPortrait(float distance = -1f, bool sway = false)
@@ -96,6 +148,9 @@ public class KunturCinematicCamera : MonoBehaviour
     {
         if (shot == Shot.None) return;
         shot = Shot.None;
+        speaker = null;
+        listener = null;
+        hasConversationAxis = false;
         returning = returnTime;
         returnFromPos = transform.position;
         returnFromRot = transform.rotation;
@@ -114,6 +169,12 @@ public class KunturCinematicCamera : MonoBehaviour
         if (shot != Shot.None)
         {
             if (!TryGetShot(out Vector3 pos, out Quaternion rot)) { Stop(); return; }
+            if (snapNow)
+            {
+                snapNow = false;
+                transform.SetPositionAndRotation(pos, rot);
+                return;
+            }
             float k = 1f - Mathf.Exp(-blendSpeed * Time.unscaledDeltaTime);
             transform.position = Vector3.Lerp(transform.position, pos, k);
             transform.rotation = Quaternion.Slerp(transform.rotation, rot, k);
@@ -143,6 +204,39 @@ public class KunturCinematicCamera : MonoBehaviour
         pos = transform.position;
         rot = transform.rotation;
         if (player == null) return false;
+
+        if (shot == Shot.Speaker)
+        {
+            if (speaker == null || listener == null) return false;
+            shotTime += Time.unscaledDeltaTime;
+
+            Vector3 shoulder = Vector3.Cross(Vector3.up, conversationAxis) * sideSign;
+            // Hacia dónde mira el que escucha: es el "hombro" por el que se
+            // asoma la cámara. Sale del eje fijo, no de la posición de cada
+            // frame, para que la toma no tiemble si alguien se mueve.
+            float facing = Vector3.Dot(Flat(speaker.position - listener.position), conversationAxis) >= 0f ? 1f : -1f;
+            Vector3 toSpeaker = conversationAxis * facing;
+
+            // Respiración: un vaivén casi imperceptible, para que no parezca
+            // una foto fija mientras alguien habla.
+            float breath = Mathf.Sin(shotTime * 0.8f) * 0.035f;
+            float drift = Mathf.Sin(shotTime * 0.55f + 1.3f) * 0.03f;
+
+            pos = listener.position
+                  + Vector3.up * (shoulderHeight + breath)
+                  + shoulder * (shoulderSide + drift)
+                  - toSpeaker * shoulderBack;
+
+            Vector3 head = speaker.position + Vector3.up * speakerHeadHeight;
+            // Si los dos quedaron demasiado juntos, la cámara se aleja un
+            // poco más para que la cara entre entera en el encuadre.
+            float gapToHead = Vector3.Distance(pos, head);
+            if (gapToHead < minSpeakerDistance)
+                pos -= toSpeaker * (minSpeakerDistance - gapToHead);
+
+            rot = Quaternion.LookRotation(head - pos);
+            return true;
+        }
 
         if (shot == Shot.Portrait)
         {

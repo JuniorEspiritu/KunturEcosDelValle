@@ -38,7 +38,7 @@ public static partial class KunturSceneBuilder
     // v55: gente de la chacra (donde andan los perros)
     // ---------------------------------------------------------------
     // Dos parejas conversando al borde del camino de tierra y un vecino que
-    // va y viene. El primero, Don Anselmo, es el dueño de los perros y te pide
+    // va y viene. El primero, Don Teófilo, es el dueño de los perros y te pide
     // limpiar el camino a la chacra (su zona propia, ver MissionDirector).
     private static void BuildChacraPeople(Transform parent, int layer)
     {
@@ -54,13 +54,13 @@ public static partial class KunturSceneBuilder
         Vector3 a2 = Ground(EastRoadX - 5.3f, 68f);
         Vector3 b2 = Ground(EastRoadX - 6.2f, 68.8f);
 
-        GameObject anselmo = BuildVillager(root.transform, "Chacarero_Anselmo", a1, HexColor("#b03a2e"), rng,
+        GameObject anselmo = BuildVillager(root.transform, "Chacarero_Teofilo", a1, HexColor("#b03a2e"), rng,
             PeopleDir + "/Prefabs/city/casual_Male_G.prefab");
         GameObject wife = BuildVillager(root.transform, "Chacarera_Juana", b1, HexColor("#1f7a5c"), rng,
             PeopleDir + "/Prefabs/elder/elder_Female_A.prefab");
         LinkVillagers(anselmo, wife, 0f);
         LinkVillagers(wife, anselmo, 3.4f);
-        MakeMissionGiver(anselmo, "Don Anselmo", false, "CHACARERO · DUEÑO DE LOS PERROS", layer, "camino_chacra");
+        MakeMissionGiver(anselmo, "Don Teófilo", false, "CHACARERO DE AZAPAMPA · DUEÑO DE LOS PERROS", layer, "camino_chacra", "father");
 
         GameObject kid = BuildVillager(root.transform, "Chacra_Nino", a2, HexColor("#2e5aa8"), rng,
             PeopleDir + "/Prefabs/little_kids/little_boy_B.prefab");

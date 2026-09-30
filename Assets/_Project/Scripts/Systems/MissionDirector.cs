@@ -37,6 +37,15 @@ public class MissionDirector : MonoBehaviour
     [SerializeField] private bool[] giverFemale;
     [SerializeField] private string[] giverRoles;
     [SerializeField] private string[] giverZones;   // zona propia del vecino ("" = al azar)
+    // Cómo habla cada uno: "mother", "father", "young", "teacher", "leader".
+    // Antes se adivinaba por el nombre ("Joven Luis" -> joven), pero con
+    // nombres de verdad del valle (Brayan, Julius, Milagros...) eso ya no
+    // alcanza: ahora cada vecino trae su registro escrito.
+    [SerializeField] private string[] giverVoices;
+    // v57c: estos nombres, en este orden, son los PRIMEROS vecinos que te
+    // encargan algo al empezar a jugar - antes salía cualquiera al azar.
+    [SerializeField]
+    private string[] priorityGiverNames = { "Brayan", "Alejandro", "Julius", "Gilmer Gonzales" };
     [SerializeField] private DialogueNPC rosa;
 
     [Header("Dificultad (cada misión un poco más difícil)")]
@@ -281,6 +290,16 @@ public class MissionDirector : MonoBehaviour
 
     private int PickGiver()
     {
+        // Los primeros encargos del juego los dan, en orden, los vecinos de
+        // priorityGiverNames (Brayan, Alejandro, Julius, Gilmer Gonzales...)
+        // en vez de salir al azar como el resto.
+        if (priorityGiverNames != null && MissionsDone < priorityGiverNames.Length)
+        {
+            string wanted = priorityGiverNames[MissionsDone];
+            for (int i = 0; i < giverNames.Length; i++)
+                if (giverCandidates[i] != null && giverNames[i] == wanted) return i;
+        }
+
         // Primero, los vecinos con zona propia que todavía no te la encargaron
         // (así la chacra de los perros y el mirador no se quedan sin misión).
         string done = SaveSystem.Current.specialZonesDone ?? "";
@@ -340,6 +359,18 @@ public class MissionDirector : MonoBehaviour
 
     private Voice GiverVoice()
     {
+        if (giverVoices != null && currentGiverIndex >= 0 && currentGiverIndex < giverVoices.Length)
+        {
+            switch ((giverVoices[currentGiverIndex] ?? "").ToLowerInvariant())
+            {
+                case "young": return Voice.Young;
+                case "teacher": return Voice.Teacher;
+                case "leader": return Voice.Leader;
+                case "mother": return Voice.Mother;
+                case "father": return Voice.Father;
+            }
+        }
+
         string n = GiverName();
         if (n.StartsWith("Joven") || n.StartsWith("Señorita")) return Voice.Young;
         if (n.StartsWith("Profesor")) return Voice.Teacher;
@@ -448,6 +479,14 @@ public class MissionDirector : MonoBehaviour
     private IEnumerator BeginCleaningAfter(float delay)
     {
         yield return new WaitForSeconds(delay);
+        // La conversación termina cuando el vecino acaba de hablar: el encargo
+        // no arranca a media frase (ni se apaga el vecino en cámara).
+        float wait = 0f;
+        while (DialogueUI.Instance != null && DialogueUI.Instance.IsOpen && wait < 12f)
+        {
+            wait += Time.deltaTime;
+            yield return null;
+        }
         SetGiverActive(currentGiver, false);
         lastGiverIndex = currentGiverIndex;
         recentGivers.Add(currentGiverIndex);

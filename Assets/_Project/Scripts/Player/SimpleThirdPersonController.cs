@@ -42,6 +42,9 @@ public class SimpleThirdPersonController : MonoBehaviour
 
     [Header("Cámara (tercera persona)")]
     [SerializeField] private Transform cameraPivot; // hijo del jugador; rota en X (pitch)
+    [Header("Partida nueva")]
+    [SerializeField] private Vector3 newGameSpawn = new Vector3(-156.5f, 0f, -135f);   // arriba del mirador del cerro
+    [SerializeField] private Vector3 newGameLookAt = new Vector3(-10f, 0f, -20f);      // hacia la ciudad
     [SerializeField] private float mouseSensitivity = 0.15f;
     [SerializeField] private float minPitch = -35f;
     [SerializeField] private float maxPitch = 60f;
@@ -139,6 +142,7 @@ public class SimpleThirdPersonController : MonoBehaviour
 
     // Grabación del tráiler (lo usa KunturTrailerCapture).
     public static Vector2 DebugMove;
+    public static bool DebugSprint;
 
     public static void AddEnergy(float amount)
     {
@@ -198,6 +202,41 @@ public class SimpleThirdPersonController : MonoBehaviour
         // solo su sombra). Todo lo que cuelga de "Visual".
         Transform visual = transform.Find("Visual");
         bodyRenderers = visual != null ? visual.GetComponentsInChildren<Renderer>(true) : new Renderer[0];
+
+        // Si en el editor se arrastró SOLO el cuerpo (Visual) a otro lugar,
+        // el jugador de verdad -con la cámara adentro- se quedó donde estaba:
+        // la cámara mira a la nada y el cuerpo camina lejos. Se junta todo:
+        // el jugador se va a donde quedó el cuerpo, y el cuerpo vuelve a su
+        // lugar dentro del jugador.
+        // (Revisa el Visual y lo que tiene adentro, p. ej. Modelo_Kuntur.)
+        if (visual != null)
+        {
+            Transform moved = null;
+            if (visual.localPosition.sqrMagnitude > 1f) moved = visual;
+            else
+                foreach (Transform child in visual)
+                    if (child.localPosition.sqrMagnitude > 1f) { moved = child; break; }
+            if (moved != null)
+            {
+                Vector3 body = moved.position;
+                moved.localPosition = Vector3.zero;   // la rotación del modelo se respeta
+                Teleport(body + Vector3.up * 0.1f, transform.eulerAngles.y);
+            }
+        }
+        // Y si la cámara quedó fuera del jugador, vuelve a su soporte.
+        if (cameraPivot != null)
+        {
+            if (cameraPivot.parent != transform) cameraPivot.SetParent(transform, false);
+            Camera main = Camera.main;
+            if (main != null && !main.transform.IsChildOf(transform))
+            {
+                main.transform.SetParent(cameraPivot, false);
+                main.transform.localPosition = new Vector3(0f, 0.75f, -3.7f);
+                main.transform.localRotation = Quaternion.identity;
+            }
+            ApplyCameraFraming();
+        }
+
     }
 
     private void TargetFraming(out float pivotH, out Vector3 offset)
@@ -509,6 +548,22 @@ public class SimpleThirdPersonController : MonoBehaviour
     }
 
     // Aparecer en un punto (la puerta de la casa al empezar el día).
+    // Partida nueva: arriba del mirador del cerro, mirando la ciudad. Se
+    // mueve el JUGADOR entero (con su cámara adentro). Lo llama DayManager.
+    public void SpawnAtNewGamePoint()
+    {
+        Vector3 spot = newGameSpawn;
+        spot.y = 0f;
+        foreach (RaycastHit hit in Physics.RaycastAll(spot + Vector3.up * 200f, Vector3.down, 400f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            if (hit.collider.transform.IsChildOf(transform)) continue;
+            if (hit.point.y > spot.y) spot.y = hit.point.y;
+        }
+        Vector3 look = newGameLookAt - spot; look.y = 0f;
+        float yaw = look.sqrMagnitude > 0.01f ? Mathf.Atan2(look.x, look.z) * Mathf.Rad2Deg : transform.eulerAngles.y;
+        Teleport(spot + Vector3.up * 0.1f, yaw);
+    }
+
     public void Teleport(Vector3 position, float yaw)
     {
         controller.enabled = false;
@@ -605,6 +660,7 @@ public class SimpleThirdPersonController : MonoBehaviour
         {
             sprinting = Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
         }
+        if (DebugSprint && DebugMove != Vector2.zero) sprinting = true;
 
         // Recogiendo una bolsa o tomando una muestra: quieto, girando hacia
         // lo que recoge.

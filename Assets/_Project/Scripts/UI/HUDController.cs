@@ -158,8 +158,6 @@ public class HUDController : MonoBehaviour
             healthFx.SetHealth(health / 100f, c, DescribeHealth(health));
             return;
         }
-        healthFillImage.fillAmount = health / 100f;
-
         int percent = Mathf.RoundToInt(health);
         if (healthPercentText != null) healthPercentText.text = $"{percent}%";
         if (healthStatusText != null) healthStatusText.text = $"{percent}% - {DescribeHealth(health)}";
@@ -167,6 +165,8 @@ public class HUDController : MonoBehaviour
         // La barra cambia de color según el estado: verde cuando el valle está
         // sano, ámbar cuando va a medias y rojo cuando está contaminado. Es la
         // lectura de un vistazo del ODS 6 + 11 sin leer ningún número.
+        if (healthFillImage == null) return;
+        healthFillImage.fillAmount = health / 100f;
         healthFillImage.color = health >= 70f ? UIPalette.Green
             : health >= 40f ? UIPalette.Amber
             : new Color(0.85f, 0.32f, 0.28f);

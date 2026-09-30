@@ -362,22 +362,96 @@ public static partial class KunturSceneBuilder
                     new Vector3(x0, 0f, z + side * off), new Vector3(x1, 0f, z + side * off), rng);
             }
         }
+
+        BuildExtraCrowd(root.transform, rng, ref n);
+    }
+
+    // ---------------------------------------------------------------
+    // v57: los huecos donde no pasaba nadie
+    // ---------------------------------------------------------------
+    // Quedaban calles enteras vacías: la Av. Giráldez no tenía un solo
+    // peatón (el reparto de arriba solo camina por las calles norte-sur y por
+    // los jirones), en los jirones se saltaba una cuadra de cada dos, y las
+    // esquinas de la plaza y de la bodega estaban desiertas. Acá se llenan
+    // esos huecos, que es donde más se nota un pueblo deshabitado.
+    private static void BuildExtraCrowd(Transform parent, System.Random rng, ref int n)
+    {
+        // --- Av. Giráldez (este-oeste), las dos veredas ---
+        float avenueOff = AvenueHalf + SidewalkWidth / 2f;
+        float[] avenueX = { ArequipaX, PunoX, MainStreetX, CuscoX };
+        for (int b = 0; b + 1 < avenueX.Length; b++)
+        {
+            float x0 = avenueX[b] + 7.5f, x1 = avenueX[b + 1] - 7.5f;
+            if (x1 - x0 < 6f) continue;
+            foreach (float side in new[] { 1f, -1f })
+            {
+                float z = AvenueZ + side * avenueOff;
+                BuildMaybeGiverPedestrian(parent, $"Peaton_Giraldez_{n++}",
+                    new Vector3(x0, 0f, z), new Vector3(x1, 0f, z), rng);
+            }
+        }
+
+        // --- Las cuadras de los jirones que antes se saltaban ---
+        float[] blocksX = { CrossStreetFromX, ArequipaX, PunoX, MainStreetX, CuscoX, CrossStreetToX };
+        float crossOff = CrossStreetHalfRoad + SidewalkWidth / 2f;
+        int k = 0;
+        foreach (float z in CrossStreetsZ)
+        {
+            for (int b = 0; b + 1 < blocksX.Length; b++, k++)
+            {
+                if (k % 2 == 0) continue;               // las que ya tienen a alguien
+                float x0 = blocksX[b] + 7.5f, x1 = blocksX[b + 1] - 7.5f;
+                if (x1 - x0 < 6f) continue;
+                float side = (k % 4 == 1) ? -1f : 1f;   // la vereda de enfrente
+                BuildMaybeGiverPedestrian(parent, $"Peaton_Jiron2_{n++}",
+                    new Vector3(x0, 0f, z + side * crossOff), new Vector3(x1, 0f, z + side * crossOff), rng);
+            }
+        }
+
+        // --- Grupitos parados conversando donde la gente de verdad se junta ---
+        // (las cuatro esquinas de la Plaza Constitución y la vereda de la
+        // Calle Real, que es por donde pasa todo el mundo).
+        float px = ParkSizeX / 2f + 1.6f, pz = ParkSizeZ / 2f + 1.6f;
+        Vector3[] corners =
+        {
+            ParkCenter + new Vector3(-px, 0f, pz), ParkCenter + new Vector3(px, 0f, pz),
+            ParkCenter + new Vector3(-px, 0f, -pz), ParkCenter + new Vector3(px, 0f, -pz),
+            new Vector3(MainStreetX + MainStreetHalf + SidewalkWidth / 2f, 0f, 22f),
+            new Vector3(MainStreetX - MainStreetHalf - SidewalkWidth / 2f, 0f, -38f),
+        };
+
+        Color[] ponchos =
+        {
+            HexColor("#b03a2e"), HexColor("#1f618d"), HexColor("#6c3483"),
+            HexColor("#117864"), HexColor("#ba4a00"), HexColor("#7d6608"),
+        };
+
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 a = corners[i];
+            Vector3 b = corners[i] + new Vector3(0.95f, 0f, 0.65f);
+            GameObject one = BuildVillager(parent, $"Corrillo_{i}A", a, ponchos[i % ponchos.Length], rng);
+            GameObject two = BuildVillager(parent, $"Corrillo_{i}B", b, ponchos[(i + 2) % ponchos.Length], rng);
+            if (one == null || two == null) continue;
+            LinkVillagers(one, two, 0f);
+            LinkVillagers(two, one, 3.1f);  // desfasado: hablan por turnos
+        }
     }
 
     // Gente que va caminando por la calle y que TAMBIÉN puede pedirte ayuda:
     // uno de cada cinco peatones. Cuando le toca, se detiene y te espera.
-    private static readonly (string name, bool female, string prefab, string role)[] WalkingGivers =
+    private static readonly (string name, bool female, string prefab, string role, string voice)[] WalkingGivers =
     {
-        ("Doña Felícita", true, "elder/elder_Female_A.prefab", "VECINA · VENDE EMOLIENTE"),
-        ("Don Marcos", false, "city/casual_Male_G.prefab", "VECINO · CHOFER DE COMBI"),
-        ("Señorita Karina", true, "downtown/casual_Female_K.prefab", "ESTUDIANTE DEL CONTINENTAL"),
-        ("Señor Wilber", false, "worker_Male_constructor_B.prefab", "VECINO · CARPINTERO"),
-        ("Señora Julia", true, "city/casual_Female_G.prefab", "VECINA · COMERCIANTE"),
-        ("Joven Kevin", false, "downtown/casual_Male_K.prefab", "ESTUDIANTE"),
-        ("Doña Nelly", true, "elder/elder_Female_A.prefab", "VECINA · COCINERA"),
-        ("Doctor Ramiro", false, "professions/Doctor_Male_B.prefab", "MÉDICO DE LA POSTA"),
-        ("Señora Rocío", true, "city/casual_Female_G.prefab", "VECINA · TEJEDORA DE CHOMPAS"),
-        ("Don Aurelio", false, "city/casual_Male_G.prefab", "VECINO · JUBILADO"),
+        ("Doña Zoraida", true, "elder/elder_Female_A.prefab", "VECINA · VENDE EMOLIENTE EN LA REAL", "mother"),
+        ("Julius", false, "city/casual_Male_G.prefab", "CHOFER DE LA COMBI A CHILCA", "young"),
+        ("Milagros", true, "downtown/casual_Female_K.prefab", "ESTUDIANTE DEL CONTINENTAL", "young"),
+        ("Wilder Quispe", false, "worker_Male_constructor_B.prefab", "VECINO · CARPINTERO DE COCHAS", "father"),
+        ("Señora Betsabé", true, "city/casual_Female_G.prefab", "COMERCIANTE DE LA FERIA DOMINICAL", "mother"),
+        ("Jhonatan", false, "downtown/casual_Male_K.prefab", "ESTUDIANTE DEL POLITÉCNICO", "young"),
+        ("Doña Aurelia", true, "elder/elder_Female_A.prefab", "VECINA · COCINERA, HACE PAPA A LA HUANCAÍNA", "mother"),
+        ("Doctor Édgar", false, "professions/Doctor_Male_B.prefab", "MÉDICO DEL HOSPITAL CARRIÓN", "teacher"),
+        ("Señora Rosmery", true, "city/casual_Female_G.prefab", "VECINA · TEJEDORA DE CHOMPAS", "mother"),
+        ("Don Percy", false, "city/casual_Male_G.prefab", "VECINO · JUBILADO, CRÍA CUYES", "father"),
     };
 
     private static int walkingGiverCounter;
@@ -394,7 +468,7 @@ public static partial class KunturSceneBuilder
 
         var g = WalkingGivers[walkingGiverCounter++];
         GameObject person = BuildAssetPedestrian(parent, name + "_" + g.name.Replace(" ", "_"), a, b, rng, PeopleDir + "/Prefabs/" + g.prefab);
-        if (person != null) MakeMissionGiver(person, g.name, g.female, g.role, interactableLayerForGivers);
+        if (person != null) MakeMissionGiver(person, g.name, g.female, g.role, interactableLayerForGivers, "", g.voice);
     }
 
     // ---------------------------------------------------------------

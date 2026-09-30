@@ -1,20 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7518613272997171696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Sprint
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: 11400000}
-  m_ActionId: 18bb5969-e172-488b-9ac1-40d37e264c9b
---- !u!114 &-2157921965176610773
+--- !u!114 &-8417955468727383209
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -27,7 +13,49 @@ MonoBehaviour:
   m_Name: Move
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: 11400000}
-  m_ActionId: b305e380-b7f0-47d0-bbb7-9d96731e8b94
+  m_ActionId: 7c47153d-5ca5-4a2a-b584-70af76a5f813
+--- !u!114 &-7407516815070413675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Jump
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: 11400000}
+  m_ActionId: 5c92fc8e-e220-46b4-860a-a7ac037ccaba
+--- !u!114 &-5686998136218585972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Sprint
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: 11400000}
+  m_ActionId: f7f59146-6a0d-46a9-a8b9-af9c0352a284
+--- !u!114 &-1374010138376285799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Look
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: 11400000}
+  m_ActionId: 2c39ee29-f375-4330-8128-adda48a57b09
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,13 +70,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionAsset
   m_ActionMaps:
   - m_Name: Player
-    m_Id: c610e8ff-008d-44e9-b97d-7460dd6ce370
+    m_Id: f6af4b30-f2d9-4333-be22-ccb0ce6c6212
     m_Asset: {fileID: 11400000}
     m_Actions:
     - m_Name: Move
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: b305e380-b7f0-47d0-bbb7-9d96731e8b94
+      m_Id: 7c47153d-5ca5-4a2a-b584-70af76a5f813
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -57,7 +85,7 @@ MonoBehaviour:
     - m_Name: Look
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 5f73793f-32fa-48cb-bea2-a76b32b1c869
+      m_Id: 2c39ee29-f375-4330-8128-adda48a57b09
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -66,7 +94,7 @@ MonoBehaviour:
     - m_Name: Sprint
       m_Type: 1
       m_ExpectedControlType: 
-      m_Id: 18bb5969-e172-488b-9ac1-40d37e264c9b
+      m_Id: f7f59146-6a0d-46a9-a8b9-af9c0352a284
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -75,7 +103,7 @@ MonoBehaviour:
     - m_Name: Jump
       m_Type: 1
       m_ExpectedControlType: 
-      m_Id: e3777e24-3add-4ebf-bcbf-a8c0c090be74
+      m_Id: 5c92fc8e-e220-46b4-860a-a7ac037ccaba
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -84,7 +112,7 @@ MonoBehaviour:
     - m_Name: InteractPrimary
       m_Type: 1
       m_ExpectedControlType: 
-      m_Id: 7a4eef3b-5d39-4e99-897c-ac55b9edc082
+      m_Id: 22e5ce03-7087-47c5-afba-9a2c24ca363b
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -93,7 +121,7 @@ MonoBehaviour:
     - m_Name: InteractSecondary
       m_Type: 1
       m_ExpectedControlType: 
-      m_Id: ed07f370-2057-4db4-9980-773330b921c4
+      m_Id: f243d273-a0aa-4bac-bdc1-4a9f6a752b77
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -101,7 +129,7 @@ MonoBehaviour:
       m_Priority: 0
     m_Bindings:
     - m_Name: 2DVector
-      m_Id: 0b12ae39-0388-47f7-8f32-36bb37d270a7
+      m_Id: d31c7ddc-d876-4748-98a0-da542302980a
       m_Path: 2DVector
       m_Interactions: 
       m_Processors: 
@@ -109,7 +137,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 4
     - m_Name: Up
-      m_Id: cf49ae4e-8aa7-4f05-965f-e4503c0c5145
+      m_Id: 857622f5-c38d-452e-9388-9e6d21e4418b
       m_Path: <Keyboard>/w
       m_Interactions: 
       m_Processors: 
@@ -117,7 +145,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: Down
-      m_Id: 82d8a9b3-4565-4f1f-a4bf-518290c360cb
+      m_Id: f6c42583-d424-448f-90df-6ceeea550edd
       m_Path: <Keyboard>/s
       m_Interactions: 
       m_Processors: 
@@ -125,7 +153,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: Left
-      m_Id: 1745e965-83d9-4aaf-b17c-43f2720581f1
+      m_Id: bc051052-cead-4871-a0b5-f43fe8593eed
       m_Path: <Keyboard>/a
       m_Interactions: 
       m_Processors: 
@@ -133,7 +161,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: Right
-      m_Id: 7cd7fb55-f937-41e6-beec-a1496c25fce6
+      m_Id: 2630d4a8-cd67-45d6-b85c-d85d5bb93a4d
       m_Path: <Keyboard>/d
       m_Interactions: 
       m_Processors: 
@@ -141,7 +169,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: 
-      m_Id: bc4f26b0-52c8-47b4-95bc-3c6a802b04b5
+      m_Id: 4de8bead-da6d-42c9-b920-59f64a7ac403
       m_Path: <Mouse>/delta
       m_Interactions: 
       m_Processors: 
@@ -149,7 +177,7 @@ MonoBehaviour:
       m_Action: Look
       m_Flags: 0
     - m_Name: 
-      m_Id: c81016a5-c1ae-4d1d-8c56-b2053aa8ec84
+      m_Id: fff9169f-5956-42a2-afac-701b98461fe9
       m_Path: <Keyboard>/leftShift
       m_Interactions: 
       m_Processors: 
@@ -157,7 +185,7 @@ MonoBehaviour:
       m_Action: Sprint
       m_Flags: 0
     - m_Name: 
-      m_Id: bce202db-9046-4b40-9195-12221a758890
+      m_Id: 923850d8-74ef-439e-bc24-30c32acabf1b
       m_Path: <Keyboard>/space
       m_Interactions: 
       m_Processors: 
@@ -165,7 +193,7 @@ MonoBehaviour:
       m_Action: Jump
       m_Flags: 0
     - m_Name: 
-      m_Id: 612257c3-b644-4866-9d5a-bd4b465297cf
+      m_Id: 7c0d28b5-2dae-4f6d-8498-c6b7a2abc75d
       m_Path: <Keyboard>/e
       m_Interactions: 
       m_Processors: 
@@ -173,7 +201,7 @@ MonoBehaviour:
       m_Action: InteractPrimary
       m_Flags: 0
     - m_Name: 
-      m_Id: 1fba6077-6a95-4276-a9ce-aa870fa0cc7d
+      m_Id: 49d2324f-05c5-4c4d-94f0-e1317c4036cd
       m_Path: <Keyboard>/f
       m_Interactions: 
       m_Processors: 
@@ -182,35 +210,7 @@ MonoBehaviour:
       m_Flags: 0
   m_ControlSchemes: []
   m_IsProjectWide: 0
---- !u!114 &259960034899009269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Look
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: 11400000}
-  m_ActionId: 5f73793f-32fa-48cb-bea2-a76b32b1c869
---- !u!114 &3268272578943034248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Jump
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: 11400000}
-  m_ActionId: e3777e24-3add-4ebf-bcbf-a8c0c090be74
---- !u!114 &6382433582241687628
+--- !u!114 &3833567631301680152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,8 +223,8 @@ MonoBehaviour:
   m_Name: InteractPrimary
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: 11400000}
-  m_ActionId: 7a4eef3b-5d39-4e99-897c-ac55b9edc082
---- !u!114 &8818604847176781173
+  m_ActionId: 22e5ce03-7087-47c5-afba-9a2c24ca363b
+--- !u!114 &4440705484398495278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,4 +237,4 @@ MonoBehaviour:
   m_Name: InteractSecondary
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: 11400000}
-  m_ActionId: ed07f370-2057-4db4-9980-773330b921c4
+  m_ActionId: f243d273-a0aa-4bac-bdc1-4a9f6a752b77

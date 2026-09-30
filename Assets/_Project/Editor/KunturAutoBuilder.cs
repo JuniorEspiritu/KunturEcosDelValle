@@ -13,7 +13,7 @@ using UnityEngine;
 public static class KunturAutoBuilder
 {
     // Subir este número en cada entrega con cambios de escena.
-    public const string SceneVersion = "v56c-tuktuk-choque-menu-sonidos";
+    public const string SceneVersion = "v58b-mirador-alto-casa-kuntur";
     public const string VersionKey = "Kuntur_EscenaConstruida";
 
     // Reconstrucción automática ENCENDIDA otra vez.

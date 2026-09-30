@@ -32,6 +32,7 @@ public static class KunturAudioCheck
     [MenuItem("Kuntur/Restaurar volumen de la música")]
     public static void RestoreMusic()
     {
+        EditorUtility.audioMasterMute = false; // el "Mute Audio" de la ventana Game
         PlayerPrefs.SetFloat("Kuntur_VolMusica", 1f);
         PlayerPrefs.SetFloat("Kuntur_VolAmbiente", 1f);
         PlayerPrefs.Save();

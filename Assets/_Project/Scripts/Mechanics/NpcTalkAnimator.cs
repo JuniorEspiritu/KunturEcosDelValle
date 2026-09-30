@@ -14,7 +14,8 @@ public class NpcTalkAnimator : MonoBehaviour
 
     private Animator animator;
     private Transform player;
-    private bool talking;
+    private bool attending;           // está en la conversación (mira a Kuntur)
+    private bool gesturing;           // además le toca hablar a él
     private float talkBlend;          // 0 = normal, 1 = hablando (para entrar y salir suave)
     private Quaternion restRotation;
     private float returnTimer;
@@ -33,12 +34,21 @@ public class NpcTalkAnimator : MonoBehaviour
         phase = Random.value * 10f;
     }
 
-    public void SetTalking(bool value)
-    {
-        if (talking == value) return;
-        talking = value;
+    // Le toca hablar: mira a Kuntur y gesticula.
+    public void SetTalking(bool value) => Attend(value, value);
 
-        if (talking)
+    // Está en la conversación pero le toca escuchar: sigue mirando a Kuntur,
+    // quieto, mientras el otro habla (si se le apagara del todo se daría la
+    // vuelta en medio de la charla).
+    public void SetListening(bool value) => Attend(value, false);
+
+    private void Attend(bool value, bool talks)
+    {
+        gesturing = value && talks;
+        if (attending == value) return;
+        attending = value;
+
+        if (attending)
         {
             restRotation = transform.rotation;
             if (player == null)
@@ -59,9 +69,9 @@ public class NpcTalkAnimator : MonoBehaviour
 
     private void Update()
     {
-        talkBlend = Mathf.MoveTowards(talkBlend, talking ? 1f : 0f, Time.deltaTime * 3f);
+        talkBlend = Mathf.MoveTowards(talkBlend, gesturing ? 1f : 0f, Time.deltaTime * 3f);
 
-        if (talking && player != null)
+        if (attending && player != null)
         {
             Vector3 toPlayer = player.position - transform.position;
             toPlayer.y = 0f;

@@ -298,6 +298,8 @@ public static partial class KunturSceneBuilder
         BuildPedestrians(world.transform);
         BuildMorePedestrians(world.transform);
         BuildParkPeople(world.transform);
+        // v58: cerro con camino en curvas y mirador, atrás de la casa de Kuntur.
+        BuildNorthMirador(world.transform);
         BuildSky(world.transform);
         ConfigureAtmosphere();
 
@@ -2469,6 +2471,7 @@ public static partial class KunturSceneBuilder
             // va de acuerdo a su nombre (Doña Maruja es una señora mayor, el
             // Señor Teodoro un hombre, etc.), nada de nombres al azar.
             var giver = Givers[i % Givers.Length];
+            string giverVoice = giver.voice;
             GameObject first = BuildVillager(villagers.transform, $"Vecino_{i}A", a, ponchos[i % ponchos.Length], rng, PeopleDir + "/Prefabs/" + giver.prefab);
             GameObject second = BuildVillager(villagers.transform, $"Vecino_{i}B", b, ponchos[(i + 3) % ponchos.Length], rng);
 
@@ -2477,7 +2480,7 @@ public static partial class KunturSceneBuilder
 
             // El primero de cada pareja puede ser el vecino que te da la
             // misión de un nivel (ver MissionDirector).
-            MakeMissionGiver(first, giver.name, giver.female, giver.role, interactableLayerForGivers);
+            MakeMissionGiver(first, giver.name, giver.female, giver.role, interactableLayerForGivers, "", giverVoice);
         }
     }
 
@@ -4521,6 +4524,8 @@ public static partial class KunturSceneBuilder
         MissionGiverNames.Add("Yamile");
         MissionGiverFemale.Add(true);
         MissionGiverRoles.Add("LÍDER COMUNITARIA");
+        MissionGiverZones.Add("");
+        MissionGiverVoices.Add("leader");
 
         // Doña Rosa, cerca de su bodega.
         GameObject rosa = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -6162,52 +6167,81 @@ public static partial class KunturSceneBuilder
         return popup;
     }
 
-    // Diálogo con el mismo reparto que la imagen del GDD: una caja baja con el
-    // retrato del vecino y lo que dice, y las tres respuestas apiladas a la
-    // derecha. No oscurece la pantalla completa: el pueblo se sigue viendo
-    // detrás, que es lo que hace que la conversación se sienta parte del mundo.
+    // v57: conversación filmada, como en los juegos de mundo abierto. La
+    // pantalla NO se tapa con un cuadro: la cámara enfoca a quien habla y lo
+    // que dice sale en una sola línea ancha al pie, sobre un degradé oscuro
+    // que solo existe para que el texto se lea sobre cualquier fondo.
+    //
+    // Las tres respuestas aparecen únicamente cuando le toca contestar al
+    // jugador (DialogueUI las prende y apaga), y el subtítulo sube para
+    // hacerles sitio.
     private static void BuildDialoguePanel(Transform root)
     {
-        Image bg = MakePanel(root, "Panel_Dialogo", new Color(0.02f, 0.03f, 0.02f, 0.25f));
+        Image bg = MakePanel(root, "Panel_Dialogo", new Color(0f, 0f, 0f, 0f));
         StretchFull(bg.rectTransform);
+        bg.raycastTarget = false;
 
-        RectTransform row = MakeRect(bg.transform, "Fila_Dialogo");
-        SetRect(row, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0, 24), new Vector2(1180, 184));
+        // Degradé al pie de la pantalla: negro abajo, transparente arriba.
+        // Sirve de fondo general para las opciones; el subtítulo en sí lleva
+        // ADEMÁS su propia caja sólida (ver abajo) porque el degradé solo no
+        // daba contraste suficiente contra un cielo claro o una pared blanca.
+        Image shade = MakeIcon(bg.transform, "Vineta_Abajo",
+            UISpriteFactory.VerticalFade("UI_DegradeVertical", Color.white), new Color(0f, 0f, 0f, 0.74f));
+        SetRect(shade.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f),
+            Vector2.zero, new Vector2(0f, 460f));
+        shade.raycastTarget = false;
 
-        // El cuadro entra con un pequeño salto al hablar con alguien, en vez
-        // de aparecer de golpe.
-        row.gameObject.AddComponent<CanvasGroup>();
-        row.gameObject.AddComponent<UIPopIn>();
+        // ---- Subtítulo (abajo, ancho) ----
+        // v57d: FIJO en su lugar, ya no sube ni baja. Antes se movía cuando
+        // aparecían las opciones -y ese movimiento pasaba mientras todavía se
+        // estaba leyendo el texto-, y encima por un instante (lo que tardaba
+        // en subir) el texto y las opciones quedaban montados uno sobre el
+        // otro. Ahora vive siempre arriba de donde van las opciones, se vean
+        // o no, así nunca hay salto ni superposición.
+        //
+        // El ancho se ESTIRA de borde a borde con un margen fijo a los
+        // costados (no un ancho en píxeles fijo): en una pantalla más
+        // angosta que 16:9 un ancho fijo se salía de los bordes y cortaba
+        // las últimas letras de cada línea.
+        Image subtitleCard = MakeRoundedPanel(bg.transform, "Grupo_Subtitulo", new Color(0.03f, 0.035f, 0.03f, 0.86f));
+        SetRect(subtitleCard.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f),
+            new Vector2(0f, 246f), new Vector2(-160f, 172f));
+        RectTransform subtitle = subtitleCard.rectTransform;
 
-        // ---- Caja de diálogo (izquierda) ----
-        Image card = MakeRoundedPanel(row, "Card_Dialogo", new Color(0.05f, 0.07f, 0.06f, 0.92f));
-        SetRect(card.rectTransform, new Vector2(0, 0), new Vector2(0, 1), new Vector2(0, 0.5f), new Vector2(0, 0), new Vector2(758, 0));
+        TextMeshProUGUI nameText = MakeText(subtitle, "Text_Nombre", "BRAYAN", 20f, HexColor("#FFD77A"),
+            TextAlignmentOptions.Top, FontStyles.Bold);
+        SetRect(nameText.rectTransform, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f),
+            new Vector2(0f, -14f), new Vector2(-40f, 26f));
+        nameText.characterSpacing = 7f;
+        nameText.textWrappingMode = TextWrappingModes.NoWrap;
+        nameText.raycastTarget = false;
 
-        Image cardFrame = MakeIcon(card.transform, "Card_Marco", UISpriteFactory.RoundedPanel("UI_PanelMarco", Color.clear, Color.white, 14f, 3f), UIPalette_Cream());
-        StretchFull(cardFrame.rectTransform);
-        cardFrame.type = Image.Type.Sliced;
+        TextMeshProUGUI speechText = MakeText(subtitle, "Text_Speech", "...", 24f, Color.white,
+            TextAlignmentOptions.Top);
+        SetRect(speechText.rectTransform, new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(0.5f, 1f),
+            new Vector2(0f, -44f), new Vector2(-80f, -44f));
+        // Autoajuste MÁS conservador que antes: una línea de más en pantalla
+        // se lee mejor que letra grande apretada en tres.
+        speechText.enableAutoSizing = true;
+        speechText.fontSizeMin = 16f;
+        speechText.fontSizeMax = 24f;
+        speechText.lineSpacing = -6f;
+        speechText.outlineWidth = 0.15f;
+        speechText.outlineColor = new Color32(0, 0, 0, 220);
+        speechText.raycastTarget = false;
 
-        Image portrait = MakeRoundedPanel(card.transform, "Card_Retrato", UIPalette_AmberDrop());
-        SetRect(portrait.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(16, 0), new Vector2(104, 104));
-        TextMeshProUGUI initial = MakeText(portrait.transform, "Text_Inicial", "R", 44f, UIPalette_Cream(), TextAlignmentOptions.Center, FontStyles.Bold);
-        StretchFull(initial.rectTransform);
-
-        TextMeshProUGUI nameText = MakeText(card.transform, "Text_Nombre", "[DOÑA ROSA]", 17f, HexColor("#FFD77A"), TextAlignmentOptions.TopLeft, FontStyles.Bold);
-        SetRect(nameText.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, 1), new Vector2(136, -16), new Vector2(-160, 24));
-
-        TextMeshProUGUI roleText = MakeText(card.transform, "Text_Rol", "VECINA · BODEGUERA", 12f, UIPalette_TextMuted(), TextAlignmentOptions.TopRight);
-        SetRect(roleText.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-18, -16), new Vector2(230, 20));
-
-        TextMeshProUGUI speechText = MakeText(card.transform, "Text_Speech", "...", 16f, UIPalette_CreamSoft(), TextAlignmentOptions.TopLeft, FontStyles.Italic);
-        SetRect(speechText.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 1), new Vector2(136, -46), new Vector2(-156, -58));
-
-        // ---- Respuestas (derecha) ----
+        // ---- Respuestas: solo en el turno del jugador ----
+        // Mismo criterio que el subtítulo: ancho ESTIRADO con margen, no un
+        // ancho fijo en píxeles, para que tampoco se salga de la pantalla en
+        // una ventana angosta.
         GameObject optionsGO = new GameObject("Content_Opciones", typeof(RectTransform));
-        optionsGO.transform.SetParent(row, false);
+        optionsGO.transform.SetParent(bg.transform, false);
         RectTransform optionsRt = optionsGO.GetComponent<RectTransform>();
-        SetRect(optionsRt, new Vector2(1, 0), new Vector2(1, 1), new Vector2(1, 0.5f), new Vector2(0, 0), new Vector2(408, 0));
+        SetRect(optionsRt, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f),
+            new Vector2(0f, 24f), new Vector2(-460f, 0f));
+
         VerticalLayoutGroup optionsVlg = optionsGO.AddComponent<VerticalLayoutGroup>();
-        optionsVlg.spacing = 5f;
+        optionsVlg.spacing = 6f;
         optionsVlg.childControlWidth = true;
         // El alto lo manda el LayoutElement de cada opción: con esto apagado,
         // cada una quedaba de 100 px (el tamaño por defecto) y la tercera se
@@ -6215,7 +6249,14 @@ public static partial class KunturSceneBuilder
         optionsVlg.childControlHeight = true;
         optionsVlg.childForceExpandWidth = true;
         optionsVlg.childForceExpandHeight = false;
-        optionsVlg.childAlignment = TextAnchor.MiddleCenter;
+        optionsVlg.childAlignment = TextAnchor.LowerCenter;
+
+        ContentSizeFitter optionsFit = optionsGO.AddComponent<ContentSizeFitter>();
+        optionsFit.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        // Entran con un pequeño salto cada vez que vuelve a ser tu turno.
+        optionsGO.AddComponent<CanvasGroup>();
+        optionsGO.AddComponent<UIPopIn>();
 
         DialogueOptionUI[] optionUis = new DialogueOptionUI[3];
         for (int i = 0; i < 3; i++)
@@ -6233,10 +6274,10 @@ public static partial class KunturSceneBuilder
         DialogueUI dialogueUi = dialogueUiGO.AddComponent<DialogueUI>();
         SerializedObject so = new SerializedObject(dialogueUi);
         so.FindProperty("panelRoot").objectReferenceValue = bg.gameObject;
-        so.FindProperty("portraitInitialText").objectReferenceValue = initial;
+        so.FindProperty("subtitleGroup").objectReferenceValue = subtitle;
         so.FindProperty("nameText").objectReferenceValue = nameText;
-        so.FindProperty("roleText").objectReferenceValue = roleText;
         so.FindProperty("speechText").objectReferenceValue = speechText;
+        so.FindProperty("optionsRoot").objectReferenceValue = optionsGO;
         SerializedProperty optionsProp = so.FindProperty("optionButtons");
         optionsProp.arraySize = 3;
         for (int i = 0; i < 3; i++)
@@ -6249,9 +6290,9 @@ public static partial class KunturSceneBuilder
 
     private static DialogueOptionUI BuildDialogueOption(Transform parent, int number)
     {
-        Image panel = MakeRoundedPanel(parent, $"Option_{number}", new Color(0.06f, 0.08f, 0.07f, 0.92f));
+        Image panel = MakeRoundedPanel(parent, $"Option_{number}", new Color(0.04f, 0.055f, 0.05f, 0.88f));
         LayoutElement le = panel.gameObject.AddComponent<LayoutElement>();
-        le.preferredHeight = 41;
+        le.preferredHeight = 46;
         Button button = panel.gameObject.AddComponent<Button>();
         button.targetGraphic = panel;
 
@@ -6270,12 +6311,15 @@ public static partial class KunturSceneBuilder
         };
 
         Image numberBadge = MakeIcon(panel.transform, "Number", UISpriteFactory.Circle("UI_Circulo", Color.white, Color.clear, 0f), badgeColor);
-        SetRect(numberBadge.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(10, 0), new Vector2(26, 26));
-        TextMeshProUGUI numberText = MakeText(numberBadge.transform, "Text_Number", number.ToString(), 15f, Color.white, TextAlignmentOptions.Center, FontStyles.Bold);
+        SetRect(numberBadge.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(12, 0), new Vector2(28, 28));
+        TextMeshProUGUI numberText = MakeText(numberBadge.transform, "Text_Number", number.ToString(), 16f, Color.white, TextAlignmentOptions.Center, FontStyles.Bold);
         StretchFull(numberText.rectTransform);
 
-        TextMeshProUGUI optionText = MakeText(panel.transform, "Text_Option", "Opción " + number, 13.5f, UIPalette_Cream(), TextAlignmentOptions.Left);
-        SetRect(optionText.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 0.5f), new Vector2(46, 0), new Vector2(-56, 0));
+        TextMeshProUGUI optionText = MakeText(panel.transform, "Text_Option", "Opción " + number, 16f, UIPalette_Cream(), TextAlignmentOptions.Left);
+        SetRect(optionText.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 0.5f), new Vector2(52, 0), new Vector2(-64, 0));
+        optionText.enableAutoSizing = true;
+        optionText.fontSizeMin = 12.5f;
+        optionText.fontSizeMax = 16f;
 
         DialogueOptionUI optionUi = panel.gameObject.AddComponent<DialogueOptionUI>();
         SerializedObject so = new SerializedObject(optionUi);

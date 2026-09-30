@@ -22,16 +22,21 @@ public static partial class KunturSceneBuilder
     // v55: zona propia de algunos vecinos (el chacarero pide limpiar la
     // chacra; la heladera del mirador, el mirador). Vacío = zona al azar.
     private static readonly List<string> MissionGiverZones = new List<string>();
+    // v57: cómo habla cada uno ("mother", "father", "young", "teacher",
+    // "leader"). Va escrito acá y no adivinado por el nombre: con gente del
+    // valle de verdad (Brayan, Julius, Milagros) el nombre ya no lo dice.
+    private static readonly List<string> MissionGiverVoices = new List<string>();
 
     // Quién es cada vecino que puede pedirte ayuda, con el cuerpo que le toca.
-    private static readonly (string name, bool female, string prefab, string role)[] Givers =
+    // v57: gente del valle del Mantaro, con nombres y oficios de Huancayo.
+    private static readonly (string name, bool female, string prefab, string role, string voice)[] Givers =
     {
-        ("Doña Maruja", true, "elder/elder_Female_A.prefab", "VECINA · VENDE EN EL MERCADO"),
-        ("Don Julio", false, "city/casual_Male_G.prefab", "VECINO · AGRICULTOR"),
-        ("Profesora Elena", true, "downtown/casual_Female_K.prefab", "PROFESORA DEL COLEGIO"),
-        ("Joven Luis", false, "downtown/casual_Male_K.prefab", "ESTUDIANTE DE LA UNCP"),
-        ("Señora Carmen", true, "city/casual_Female_G.prefab", "VECINA · TEJEDORA"),
-        ("Señor Teodoro", false, "worker_Male_constructor_B.prefab", "VECINO · MAESTRO DE OBRA"),
+        ("Doña Nélida", true, "elder/elder_Female_A.prefab", "VECINA · VENDE EN EL MERCADO MODELO", "mother"),
+        ("Gilmer Gonzales", false, "city/casual_Male_G.prefab", "VECINO · AGRICULTOR DE SAÑO", "father"),
+        ("Profesora Yeni", true, "downtown/casual_Female_K.prefab", "PROFESORA DEL SANTA ISABEL", "teacher"),
+        ("Brayan", false, "downtown/casual_Male_K.prefab", "ESTUDIANTE DE LA UNCP", "young"),
+        ("Señora Flor", true, "city/casual_Female_G.prefab", "VECINA · TEJEDORA DE HUALHUAS", "mother"),
+        ("Alejandro", false, "worker_Male_constructor_B.prefab", "VECINO · MAESTRO DE OBRA", "father"),
     };
 
     private static int interactableLayerForGivers
@@ -59,7 +64,7 @@ public static partial class KunturSceneBuilder
 
     // El vecino queda listo para hablar, pero con el collider apagado:
     // MissionDirector lo prende solo cuando le toca dar la misión del nivel.
-    private static void MakeMissionGiver(GameObject villager, string name, bool female, string role, int layer, string preferredZone = "")
+    private static void MakeMissionGiver(GameObject villager, string name, bool female, string role, int layer, string preferredZone = "", string voice = "")
     {
         if (villager == null) return;
 
@@ -92,6 +97,7 @@ public static partial class KunturSceneBuilder
         MissionGiverFemale.Add(female);
         MissionGiverRoles.Add(role);
         MissionGiverZones.Add(preferredZone ?? "");
+        MissionGiverVoices.Add(string.IsNullOrEmpty(voice) ? (female ? "mother" : "father") : voice);
     }
 
     // Punto de color que solo ve la cámara del mapa (capa "SoloMapa"): así la
@@ -953,6 +959,10 @@ public static partial class KunturSceneBuilder
         giverZones.arraySize = MissionGivers.Count;
         for (int i = 0; i < MissionGivers.Count; i++)
             giverZones.GetArrayElementAtIndex(i).stringValue = i < MissionGiverZones.Count ? MissionGiverZones[i] : "";
+        SerializedProperty giverVoices = so.FindProperty("giverVoices");
+        giverVoices.arraySize = MissionGivers.Count;
+        for (int i = 0; i < MissionGivers.Count; i++)
+            giverVoices.GetArrayElementAtIndex(i).stringValue = i < MissionGiverVoices.Count ? MissionGiverVoices[i] : "";
         givers.arraySize = MissionGivers.Count;
         names.arraySize = MissionGivers.Count;
         females.arraySize = MissionGivers.Count;

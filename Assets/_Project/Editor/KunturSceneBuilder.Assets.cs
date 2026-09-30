@@ -687,6 +687,7 @@ public static partial class KunturSceneBuilder
         pedestrianGiverTick = 0;
         MissionGiverRoles.Clear();
         MissionGiverZones.Clear();
+        MissionGiverVoices.Clear();
         MissionZoneList.Clear();
         PeopleControllers.Clear();
         peoplePalettes = null;

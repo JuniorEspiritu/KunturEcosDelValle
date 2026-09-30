@@ -78,6 +78,12 @@ public class DialogueNPC : MonoBehaviour, IInteractable
         if (talk != null) talk.SetTalking(value);
     }
 
+    // Le toca escuchar a Kuntur: sigue de frente a él, pero sin gesticular.
+    public void SetListening(bool value)
+    {
+        if (talk != null) talk.SetListening(value);
+    }
+
     public void Interact()
     {
         if (convinced) return;

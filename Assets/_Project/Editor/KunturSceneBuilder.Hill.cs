@@ -286,7 +286,7 @@ public static partial class KunturSceneBuilder
         {
             LinkVillagers(rosario, friendGO, 0f);
             LinkVillagers(friendGO, rosario, 3.4f);
-            MakeMissionGiver(rosario, "Doña Rosario", true, "HELADERA DEL MIRADOR", layer, "mirador");
+            MakeMissionGiver(rosario, "Doña Rosario", true, "HELADERA DEL MIRADOR", layer, "mirador", "mother");
         }
 
         // Alguien que sube y baja la calle a pie.

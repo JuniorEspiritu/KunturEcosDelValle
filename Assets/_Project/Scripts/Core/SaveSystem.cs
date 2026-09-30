@@ -54,6 +54,10 @@ public static class SaveSystem
         PlayerPrefs.Save();
     }
 
+    // Partida nueva recién empezada: Kuntur aparece arriba del mirador del
+    // cerro (lo lee SimpleThirdPersonController al arrancar y lo apaga).
+    public static bool FreshStart;
+
     public static void Clear()
     {
         PlayerPrefs.DeleteKey(Key);

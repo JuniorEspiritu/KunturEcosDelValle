@@ -68,7 +68,7 @@ public class DayManager : MonoBehaviour
         SaveData save = SaveSystem.Current;
         if (ValleyHealthManager.Instance != null) ValleyHealthManager.Instance.SetHealth(save.health);
         if (DayNightCycle.Instance != null) DayNightCycle.Instance.SetTimeOfDay(morningHour);
-        PlacePlayerAtHome();
+        PlacePlayerAtHome(true);
         UpdateDayLabel();
 
         StartCoroutine(Greeting(save.day == 1 && save.missionsDone == 0));
@@ -240,9 +240,18 @@ public class DayManager : MonoBehaviour
         }
     }
 
-    private void PlacePlayerAtHome()
+    private void PlacePlayerAtHome(bool gameStart = false)
     {
-        if (player == null || homeSpawn == null) return;
+        if (player == null) return;
+        // Partida nueva (o sin nada guardado): Kuntur arranca arriba del
+        // mirador del cerro, viendo toda la ciudad. Si no, en su casa.
+        if (gameStart && (SaveSystem.FreshStart || !SaveSystem.HasSave))
+        {
+            SaveSystem.FreshStart = false;
+            player.SpawnAtNewGamePoint();
+            return;
+        }
+        if (homeSpawn == null) return;
         player.Teleport(homeSpawn.position, homeSpawn.eulerAngles.y);
     }
 
